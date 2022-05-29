@@ -1,8 +1,12 @@
 import { useState } from "react";
+import axios from "axios";
 import styledComponent from "styled-components";
 
+import { TODAYS_HABITS_API } from "./API";
 import Header from "./Header";
 import Footer from "./Footer";
+import SubtitleNoHabits from "./Habits/SubtitleNoHabits";
+import SubtitleCompletingHabits from "./Habits/SubtitleCompletingHabits";
 
 export default function TodayPage () {
 
@@ -18,7 +22,7 @@ export default function TodayPage () {
     };
 
     return (
-        <Container>
+        <TodayPageContainer>
             <Header />
             <Date />
             <Subtitle>
@@ -29,13 +33,13 @@ export default function TodayPage () {
                     <SubtitleCompletingHabits />
                 }
             </Subtitle>
-            <HabitCard />
-            <Footer />
-        </Container>
+            {/* <HabitCard /> */}
+            {/* <Footer /> */}
+        </TodayPageContainer>
     );
 }
 
-const Container = styledComponent.section`
+const TodayPageContainer = styledComponent.section`
     width: 375px;
     height: auto;
     background: #E5E5E5;

@@ -1,3 +1,5 @@
+import styledComponent from "styled-components";
+
 export default function ShowSubtitleCompletingHabits () {
     return (
         <SubtitleCompletingHabits>

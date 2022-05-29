@@ -30,7 +30,7 @@ export default function SignUpPage () {
     }
 
     return (
-        <Container>
+        <SignUpPageContainer>
             <Isologotype />
             <Form onSubmit = {RegisteringUser}>
                 <EmailInput
@@ -64,11 +64,11 @@ export default function SignUpPage () {
             <Link to = "/">
                 <p>Já tem uma conta? Faça Login!</p>
             </Link>
-        </Container>
+        </SignUpPageContainer>
     );
 }
 
-const Container = styledComponent.div`
+const SignUpPageContainer = styledComponent.div`
     display: flex;
     flex-direction: column;
     justify-content: center;

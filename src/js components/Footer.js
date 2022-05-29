@@ -1,15 +1,20 @@
+import { Link } from "react-router-dom";
 import styledComponent from "styled-components";
 
 export default function Footer () {
     return (
-        <Container>
-            <HabitsButton>Hábitos</HabitsButton>
+        <FooterContainer>
+            <Link to = "./habitos">
+                <HabitsButton>Hábitos</HabitsButton>
+            </Link>
+            <Link to = "./historico">
             <HistoryButton>Histórico</HistoryButton>
-        </Container>
+            </Link>
+        </FooterContainer>
     );
 }
 
-const Container = styledComponent.footer`
+const FooterContainer = styledComponent.footer`
     width: 375px;
     height: 70px;
     background: #FFFFFF;
@@ -29,7 +34,6 @@ const HabitsButton = styledComponent.button`
     line-height: 22px;
     text-align: center;
     background: none;
-    border: none;
 `;
 
 const HistoryButton = styledComponent.button`
@@ -40,5 +44,4 @@ const HistoryButton = styledComponent.button`
     line-height: 22px;
     text-align: center;
     background: none;
-    border: none;
 `;

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styledComponent from "styled-components";
+
+import UserContext from "../contexts/UserContext";
 
 import Isologotype from "./Isologotype";
 import { LOGIN_USER_API } from "./API";
@@ -9,26 +11,36 @@ import { LOGIN_USER_API } from "./API";
 export default function LogInPage () {
 
     const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const {user, setUser} = useContext(UserContext);
 
     function LoggingInUser (event) {
 
         const logInUser = axios.post(LOGIN_USER_API, {email, password});
 
         logInUser.then(APIresponse => {
+            
+            setUser(APIresponse.data);
+
+            const userInformation = { user: APIresponse.data };
+            const userInformationString = JSON.stringify(userInformation);
+            localStorage.setItem("list", userInformationString);
+            
             navigate("/hoje");
         });
 
-        logInUser.catch(error => {
-            alert("Login ou senha incorretos. Tente novamente.")
+        logInUser.catch(() => {
+            alert("Login e/ou senha incorretos. Tente novamente.")
         });
 
         event.preventDefault();
     }
 
     return (
-        <Container>
+        <LogInPageContainer>
             <Isologotype />
             <Form onSubmit = {LoggingInUser}>
                 <EmailInput
@@ -50,11 +62,11 @@ export default function LogInPage () {
             <Link to = "/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
-        </Container>
+        </LogInPageContainer>
     );
 }
 
-const Container = styledComponent.div`
+const LogInPageContainer = styledComponent.div`
     display: flex;
     flex-direction: column;
     justify-content: center;

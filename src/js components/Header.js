@@ -1,16 +1,23 @@
+import { useContext } from "react";
 import styledComponent from "styled-components";
+
+import UserContext from "../contexts/UserContext";
+
 import logotype from "../assets/TrackIt.png";
 
 export default function Header () {
+
+    const {user} = useContext(UserContext);
+
     return (
-        <Container>
+        <HeaderContainer>
             <Logotype src = {logotype} alt = "header logo" />
-            <UserProfilePicture src = {"../assets/TrackIt.png"} alt = "user profile picture" />
-        </Container>
+            <UserProfilePicture src = {user.image} alt = "user profile picture" />
+        </HeaderContainer>
     );
 }
 
-const Container = styledComponent.div`
+const HeaderContainer = styledComponent.div`
     width: 375px;
     height: 70px;
     background: #126BA5;
