@@ -24,7 +24,7 @@ export default function Footer () {
                     text = "Hoje"
                     styles = {buildStyles({
                         backgroundColor: "#52B6FF",
-                        textColor: "black",
+                        textColor: "#FFFFFF",
                         pathColor: "#FFFFFF",
                         trailColor: "transparent"
                     })}
@@ -50,7 +50,7 @@ const FooterContainer = styledComponent.footer`
 `;
 
 const HabitsButton = styledComponent.button`
-    width: 187.5px;
+    width: 135px;
     height: 70px;
     font-size: 18px;
     color: #52B6FF;
@@ -60,13 +60,13 @@ const HabitsButton = styledComponent.button`
 `;
 
 const BarContainer = styledComponent.div`
-    width: 100px;
-    height: 100px;
-    margin-bottom: 200px;
+    min-width: 100px;
+    min-height: 100px;
+    margin-bottom: 95px;
 `;
 
 const HistoryButton = styledComponent.button`
-    width: 187.5px;
+    width: 135px;
     height: 70px;
     font-size: 18px;
     color: #52B6FF;
