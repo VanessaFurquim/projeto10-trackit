@@ -1,13 +1,34 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import styledComponent from "styled-components";
 
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
+import ProgressContext from '../contexts/ProgressContext';
+
 export default function Footer () {
+
+    const { completedHabitsPercentage } = useContext(ProgressContext);
+
     return (
         <FooterContainer>
-            <Link to = "./habitos">
+            <Link to = "/habitos">
                 <HabitsButton>Hábitos</HabitsButton>
             </Link>
-            <Link to = "./historico">
+            <CircularProgressbar 
+                background
+                backgroundPadding = {6}
+                value = {Math.ceil(completedHabitsPercentage)}
+                text = "Hoje"
+                styles = {buildStyles({
+                    backgroundColor: "#52B6FF",
+                    textColor: "#FFFFFF",
+                    pathColor: "#FFFFFF",
+                    trailColor: "transparent"
+                })}
+            />
+            <Link to = "/historico">
             <HistoryButton>Histórico</HistoryButton>
             </Link>
         </FooterContainer>

@@ -16,6 +16,8 @@ export default function SignUpPage () {
 
     function RegisteringUser (event) {
 
+        event.preventDefault();
+
         const registerUser = axios.post(REGISTER_USER_API, {email, password, name, image});
         
         registerUser.then(APIresponse => {
@@ -25,8 +27,6 @@ export default function SignUpPage () {
         registerUser.catch(error => {
             alert("Algo deu errado com o seu cadastro. Tente novamente, por favor.");
         });
-
-        event.preventDefault();
     }
 
     return (

@@ -15,9 +15,11 @@ export default function LogInPage () {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const {user, setUser} = useContext(UserContext);
+    const {setUser} = useContext(UserContext);
 
     function LoggingInUser (event) {
+
+        event.preventDefault();
 
         const logInUser = axios.post(LOGIN_USER_API, {email, password});
 
@@ -35,8 +37,6 @@ export default function LogInPage () {
         logInUser.catch(() => {
             alert("Login e/ou senha incorretos. Tente novamente.")
         });
-
-        event.preventDefault();
     }
 
     return (

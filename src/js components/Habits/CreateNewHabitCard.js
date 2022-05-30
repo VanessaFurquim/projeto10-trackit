@@ -1,22 +1,85 @@
-import { useState } from "react";
+import axios from "axios";
+import { useState, useContext } from "react";
 import styledComponent from "styled-components";
 
-import EachWeekDay from "./EachWeekDay";
+import UserContext from "../../contexts/UserContext";
 
-export default function CreateNewHabitCard () {
+import { NEW_HABIT_CARD_API } from "../API";
 
+export default function CreateNewHabitCard ({canceledNewHabitCard, cancelNewHabitCard}, reloadData) {
+
+    const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
+
+    const {user} = useContext(UserContext);
     const [habitName, setHabitName] = useState("");
+    const [selectedWeekDays, setSelectedWeekDays] = useState([]);
+
+    function markWeekDays (index) {
+        // excluindo dias já clicados da array dos selecionados. //
+        if (selectedWeekDays.includes(index)) {
+            const ArrayOfSelectedWeekDays = selectedWeekDays.filter(weekDaysIndex => weekDaysIndex !== index);
+            setSelectedWeekDays(ArrayOfSelectedWeekDays);
+        // criando uma array com os dias já selecionados (se algum) e o clicado. //
+        } else {
+            setSelectedWeekDays([...selectedWeekDays, index]);
+        }
+    }
+
+    function saveNewHabitCard (event, user) {
+
+        const config = {headers: {Authorization: `Bearer ${user.token}`}};
+
+        event.preventDefault();
+
+        const saveNewHabitCard = axios.post(NEW_HABIT_CARD_API, {name: habitName, days: selectedWeekDays}, config);
+
+        console.log(NEW_HABIT_CARD_API)
+
+        console.log(saveNewHabitCard)
+
+        saveNewHabitCard.then(APIResponse => {
+            console.log("salvou")
+            reloadData();
+            cancelNewHabitCard();
+        });
+        saveNewHabitCard.catch(error => {
+            alert("Não foi possível salvar novo hábito.")
+        });
+    }
 
     return (
         <CreateNewHabitCardContainer>
-            <form>
-                <HabitInput placeholder = "nome do hábito" onChange = {(event) => setHabitName(event.target.value)} value = {habitName} />
+            <form onSubmit = {saveNewHabitCard}>
+                <HabitInput
+                    placeholder = "nome do hábito"
+                    onChange = {(event) => setHabitName(event.target.value)}
+                    value = {habitName} />
                 <Weekdays>
-
+                    {
+                        weekDays.map((weekDay, index) => (
+                            <EachWeekDay
+                                key = {index}
+                                index = {index}
+                                isSelected = {selectedWeekDays.includes(index)}
+                                onClick = {() => markWeekDays(index)}
+                            >
+                                {weekDay}
+                            </EachWeekDay>
+                        ))
+                    }
                 </Weekdays>
                 <Buttons>
-                    <CancelButton />
-                    <SaveButton />
+                    <CancelButton
+                        type = "button" 
+                        onClick = {canceledNewHabitCard}
+                    >
+                        Cancelar
+                    </CancelButton>
+                    <SaveButton
+                        type = "submit"
+                    >
+                        Salvar
+                    </SaveButton>
                 </Buttons>
             </form>
         </CreateNewHabitCardContainer>
@@ -33,12 +96,6 @@ const CreateNewHabitCardContainer = styledComponent.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    p {
-        font-size: 18px;
-        color: #666666;
-        line-height: 22px;
-    }
 `;
 
 const HabitInput = styledComponent.input`
@@ -47,7 +104,7 @@ const HabitInput = styledComponent.input`
     background: #FFFFFF;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
-    font-size: 19.976px;
+    font-size: 20px;
     color: #DBDBDB;
     line-height: 25px;
 `;
@@ -58,6 +115,18 @@ const Weekdays = styledComponent.div`
     align-items: center;
 `;
 
+const EachWeekDay = styledComponent.div`
+    width: 30px;
+    height: 30px;
+    background: ${(props) => (props.isSelected ? "#CFCFCF" : "#FFFFFF")};
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-size: 20px;
+    color: ${(props) => (props.isSelected ? "#FFFFFF" : "#DBDBDB")};
+    line-height: 25px;
+    text-align: center;
+`;
+
 const Buttons = styledComponent.div`
     display: flex;
     justify-content: flex-end;
@@ -65,21 +134,20 @@ const Buttons = styledComponent.div`
 `;
 
 const CancelButton = styledComponent.button`
-    font-size: 15.976px;
+    font-size: 16px;
     color: #52B6FF;
     line-height: 20px;
     text-align: center;
-    border: none;
 `;
 
 const SaveButton = styledComponent.button`
     width: 84px;
     height: 35px;
     background: #52B6FF;
-    border-radius: 4.63636px;
+    border-radius: 5px;
     font-size: 16px;
     color: #FFFFFF;
     line-height: 20px;
     text-align: center;
-    margin-left: 20px;s
+    margin-left: 20px;
 `;

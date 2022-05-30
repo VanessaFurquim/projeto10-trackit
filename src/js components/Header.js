@@ -12,7 +12,7 @@ export default function Header () {
     return (
         <HeaderContainer>
             <Logotype src = {logotype} alt = "header logo" />
-            <UserProfilePicture src = {user.image} alt = "user profile picture" />
+            <UserProfilePicture src = {user ? user.image : ""} alt = "user profile picture" />
         </HeaderContainer>
     );
 }
