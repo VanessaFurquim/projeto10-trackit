@@ -5,33 +5,17 @@ import styledComponent from "styled-components";
 
 import UserContext from "../../contexts/UserContext";
 
-export default function HabitCardTemplate ( { habit, reloadData,  Weekdays, EachWeekDay } ) {
+export default function HabitCardTemplate ( { habit, reloadData } ) {
 
     const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
     const {user} = useContext(UserContext);
 
-    function deleteHabitCard({user}) {
-        
-        // function confirmDeletion() {
-
-        //     const onClick = async () => {
-        //         const result = await confirm("Are you sure?");
-        //         if (result) {
-        //           console.log("You click yes!");
-        //           return;
-        //         }
-        //         console.log("You click No!");
-        //       };
-
-        //     const confirmationWindow = window.confirm("Deseja excluir este hábito permanentemente?") ? onConfirm("Sim") : onCancel("Cancelar");
-        // }
-
-        // confirmationWindow = "Sim"
-
+    function deleteHabitCard() {
+ 
         if (confirm("Deseja excluir este hábito permanentemente?")) {
 
-            const config = {headers: {Authorization: `Bearer ${user.token}`}};
+            const config = {headers: {"Authorization": `Bearer ${user.token}`}};
 
             const deleteRequest = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`, config);
 
@@ -50,7 +34,7 @@ export default function HabitCardTemplate ( { habit, reloadData,  Weekdays, Each
             <HabitCardHeader>
                 <HabitName>{habit.name}</HabitName>
                 <DeleteImage>
-                    <img src = "../../assets/trashcan.png" onClick = {deleteHabitCard}/>
+                    <img src = "../../assets/trashcan.png" onClick = {deleteHabitCard} />
                 </DeleteImage>
             </HabitCardHeader>
             <Weekdays>
@@ -93,9 +77,10 @@ const HabitName = styledComponent.p`
     line-height: 25px;
 `;
 
-const DeleteImage = styledComponent.img`
+const DeleteImage = styledComponent.div`
     width: 13px;
     height: 25px;
+    background: #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -103,5 +88,24 @@ const DeleteImage = styledComponent.img`
     img {
         width: 13px;
         height: 15px;
+        color: #666666;
     }
+`;
+
+const Weekdays = styledComponent.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+const EachWeekDay = styledComponent.div`
+    width: 30px;
+    height: 30px;
+    background: ${(props) => (props.isSelected ? "#CFCFCF" : "#FFFFFF")};
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-size: 20px;
+    color: ${(props) => (props.isSelected ? "#FFFFFF" : "#DBDBDB")};
+    line-height: 25px;
+    text-align: center;
 `;

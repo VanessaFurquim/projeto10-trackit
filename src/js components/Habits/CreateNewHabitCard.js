@@ -1,18 +1,23 @@
 import axios from "axios";
 import { useState, useContext } from "react";
+import { useEffect } from "react/cjs/react.production.min";
 import styledComponent from "styled-components";
 
 import UserContext from "../../contexts/UserContext";
 
 import { NEW_HABIT_CARD_API } from "../API";
 
-export default function CreateNewHabitCard ({canceledNewHabitCard, cancelNewHabitCard}, reloadData) {
+export default function CreateNewHabitCard ({canceledNewHabitCard, reloadData}) {
 
     const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
     const {user} = useContext(UserContext);
     const [habitName, setHabitName] = useState("");
     const [selectedWeekDays, setSelectedWeekDays] = useState([]);
+
+    useEffect(() => (
+        console.log(user.user.token)
+    ), [user.user.token])
 
     function markWeekDays (index) {
         // excluindo dias já clicados da array dos selecionados. //
@@ -25,22 +30,17 @@ export default function CreateNewHabitCard ({canceledNewHabitCard, cancelNewHabi
         }
     }
 
-    function saveNewHabitCard (event, user) {
+    function saveNewHabitCard (event) {
 
-        const config = {headers: {Authorization: `Bearer ${user.token}`}};
+        const config = {headers: {"Authorization": `Bearer ${user.user.token}`}};
 
         event.preventDefault();
 
         const saveNewHabitCard = axios.post(NEW_HABIT_CARD_API, {name: habitName, days: selectedWeekDays}, config);
 
-        console.log(NEW_HABIT_CARD_API)
-
-        console.log(saveNewHabitCard)
-
         saveNewHabitCard.then(APIResponse => {
-            console.log("salvou")
             reloadData();
-            cancelNewHabitCard();
+            // cancelNewHabitCard();
         });
         saveNewHabitCard.catch(error => {
             alert("Não foi possível salvar novo hábito.")
@@ -49,7 +49,7 @@ export default function CreateNewHabitCard ({canceledNewHabitCard, cancelNewHabi
 
     return (
         <CreateNewHabitCardContainer>
-            <form onSubmit = {saveNewHabitCard}>
+            <form onSubmit = {(event) => saveNewHabitCard(event)}>
                 <HabitInput
                     placeholder = "nome do hábito"
                     onChange = {(event) => setHabitName(event.target.value)}
@@ -77,6 +77,7 @@ export default function CreateNewHabitCard ({canceledNewHabitCard, cancelNewHabi
                     </CancelButton>
                     <SaveButton
                         type = "submit"
+                        onClick = {saveNewHabitCard}
                     >
                         Salvar
                     </SaveButton>

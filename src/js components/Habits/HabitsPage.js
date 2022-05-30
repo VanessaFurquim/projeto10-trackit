@@ -7,7 +7,6 @@ import UserContext from "../../contexts/UserContext";
 import { LIST_OF_HABITS_API } from "../API";
 import Header from "../Header";
 import CreateNewHabitCard from "./CreateNewHabitCard";
-import { Weekdays, EachWeekDay } from "./CreateNewHabitCard";
 import HabitCard from "./HabitCard";
 import Footer from "../Footer";
 
@@ -18,20 +17,18 @@ export default function HabitsPage () {
     const [exibitCreatingModule, setExibitCreatingModule] = useState(false);
 
     useEffect(() => {
-        loadHabits();
+        if(user.token) loadHabits();
     }, []);
 
     function loadHabits () {
-        console.log(user.token);
 
-        const config = {headers: {Authorization: `Bearer ${user.token}`}};
-
-        console.log(config)
-
-        const listOfHabits = axios.get(LIST_OF_HABITS_API, config);
-
-
-        listOfHabits.then(console.log(listOfHabits));
+        const config = {headers: {"Authorization": `Bearer ${user.token}`}};
+        
+        if (user.token) {
+            const listOfHabits = axios.get(LIST_OF_HABITS_API, config);
+            
+            listOfHabits.then(APIResponse => setHabits(APIResponse.data));
+        }
     }
 
     function cancelNewHabitCard () {

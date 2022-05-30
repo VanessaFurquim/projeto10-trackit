@@ -12,35 +12,32 @@ import Header from "../Header";
 import Footer from "../Footer";
 import TodaysHabitsTemplate from "./TodaysHabitsTemplate";
 
-export default function TodayPage ({habits}) {
+export default function TodayPage () {
 
     const {user} = useContext(UserContext);
     const { completedHabitsPercentage, setCompletedHabitsPercentage } = useContext(ProgressContext);
 
     const [todaysHabits, setTodaysHabits] = useState([]);
 
-    const config = {headers: {Authorization: `Bearer ${user.token}`}};
+    const config = {headers: {"Authorization": `Bearer ${user.token}`}};
 
 
     useEffect(() => {
         
-        loadHabits();
+        if(user.token) loadHabits();
 
-    }, []);
+    }, [user.token]);
 
     function loadHabits () {
-        const config = {headers: {Authorization: `Bearer ${user.token}`}};
-
-        console.log(config)
 
         const listOfTodaysHabits = axios.get(TODAYS_HABITS_API, config);
-
-        console.log(listOfTodaysHabits)
 
         listOfTodaysHabits.then(APIResponse => {
             setTodaysHabits(APIResponse.data);
             calculatePercentage(APIResponse.data);
         });
+
+        listOfTodaysHabits.catch(console.log("falha de renderização"))
     }
 
     function changeColor (habit) {
@@ -56,9 +53,7 @@ export default function TodayPage ({habits}) {
                 )
         }
 
-        checkmarkAPI.then(APIResponse => {
-            loadHabits();
-        })
+        checkmarkAPI.then(APIResponse => {loadHabits()})
     }
 
     function calculatePercentage (todaysHabits ) {
@@ -87,7 +82,7 @@ export default function TodayPage ({habits}) {
                 }
             </Subtitle>
             {
-                todaysHabits.length !==0 ?
+                todaysHabits.length !== 0 ?
                 (
                     todaysHabits.map((habit) => (
                         <TodaysHabitsTemplate

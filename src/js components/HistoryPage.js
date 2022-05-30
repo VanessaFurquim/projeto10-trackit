@@ -14,12 +14,12 @@ export default function HistoryPage () {
 
     const [historyOfHabits, setHistoryOfHabits] = useState([]);
 
-    const config = {headers: {Authorization: `Bearer ${user.token}`}};
+    const config = {headers: {"Authorization": `Bearer ${user.token}`}};
 
 
     useEffect(() => {
         
-        loadHabits();
+        if(user.token) loadHabits();
 
     }, []);
 
