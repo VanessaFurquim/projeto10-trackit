@@ -43,7 +43,7 @@ const GlobalStyle = createGlobalStyle`
     * {
         width: 100%;
         box-sizing: border-box;
-        font-family: 'Lexend Deca', sans-serif;
+        font-family: 'Lexend Deca';
         font-weight: 400;
     }
 

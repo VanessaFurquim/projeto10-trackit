@@ -1,6 +1,6 @@
 import styledComponent from "styled-components";
 
-export default function TodaysHabitsTemplate ({habit, changeColor}) {
+export default function TodaysHabitsTemplate ({habit, checked}) {
 
     return (
         <TemplateContainer>
@@ -8,7 +8,7 @@ export default function TodaysHabitsTemplate ({habit, changeColor}) {
                 <p>{habit.name}</p>
                 <div>
                     Sequência atual: <Sequence
-                        highlight = {false}
+                        highlight = {habit.done}
                     >
                         {habit.currentSequence} dia(s)
                     </Sequence>
@@ -16,14 +16,14 @@ export default function TodaysHabitsTemplate ({habit, changeColor}) {
                 <div>
                     Seu recorde: 
                     <Sequence
-                        highlight = {false}
+                        highlight = {habit.done}
                     >
                         {habit.highestSequence} dia(s)
                     </Sequence>
                 </div>
             </Text>
-            <Checkmark checked = {habit.done} onClick = {changeColor}>
-                <img src = "../../assets/checkmark.png" />
+            <Checkmark checked = {habit.done} onClick = {checked}>
+                <ion-icon name = "checkbox"></ion-icon>
             </Checkmark>
         </TemplateContainer>
     );
@@ -67,12 +67,14 @@ const Sequence = styledComponent.span`
 const Checkmark = styledComponent.div`
     width: 69px;
     height: 69px;
-    background: ${(props) => (props.highlight ? "#8FC549" : "#EBEBEB")};
-    border: 1px solid #E7E7E7;
     border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    img {
-        width: 35px;
-        height: auto;
+    ion-icon {
+        width: 75px;
+        height: 75px;
+        color: ${(props) => (props.checked ? "#8FC549" : "#EBEBEB")};
     }
 `;

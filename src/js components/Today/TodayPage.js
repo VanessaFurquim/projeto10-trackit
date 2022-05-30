@@ -21,12 +21,11 @@ export default function TodayPage () {
 
     const config = {headers: {"Authorization": `Bearer ${user.token}`}};
 
-
     useEffect(() => {
         
         if(user.token) loadHabits();
 
-    }, [user.token]);
+    }, []);
 
     function loadHabits () {
 
@@ -37,23 +36,25 @@ export default function TodayPage () {
             calculatePercentage(APIResponse.data);
         });
 
-        listOfTodaysHabits.catch(console.log("falha de renderização"))
+        listOfTodaysHabits.catch(APIResponse => console.log(APIResponse.data.message))
     }
 
     function changeColor (habit) {
 
+        console.log(habit)
+
         let checkmarkAPI = "";
 
         {
-            habit.done ? 
+            !habit.done ? 
             (
-                checkmarkAPI = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, config)
+                checkmarkAPI = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, config)
             ) : (
-                axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, config)
+                checkmarkAPI = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, config)
                 )
         }
 
-        checkmarkAPI.then(APIResponse => {loadHabits()})
+        checkmarkAPI.then(APIResponse => {loadHabits();})
     }
 
     function calculatePercentage (todaysHabits ) {
@@ -102,8 +103,9 @@ export default function TodayPage () {
 
 const TodayPageContainer = styledComponent.section`
     width: 375px;
-    height: auto;
+    min-height: 100vh;
     background: #E5E5E5;
+    margin-top: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -116,7 +118,6 @@ const Date = styledComponent.div`
     color: #126BA5;
     line-height: 29px;
     padding-left: 17px;
-    margin-top: 100px;
     text-align: flex-start;
 `;
 

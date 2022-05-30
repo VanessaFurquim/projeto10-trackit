@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useContext } from "react";
-import { useEffect } from "react/cjs/react.production.min";
+import { useEffect } from "react";
 import styledComponent from "styled-components";
 
 import UserContext from "../../contexts/UserContext";
@@ -15,9 +15,9 @@ export default function CreateNewHabitCard ({canceledNewHabitCard, reloadData}) 
     const [habitName, setHabitName] = useState("");
     const [selectedWeekDays, setSelectedWeekDays] = useState([]);
 
-    useEffect(() => (
-        console.log(user.user.token)
-    ), [user.user.token])
+    useEffect(() => {
+        console.log(user)
+    }, [])
 
     function markWeekDays (index) {
         // excluindo dias já clicados da array dos selecionados. //
@@ -32,15 +32,16 @@ export default function CreateNewHabitCard ({canceledNewHabitCard, reloadData}) 
 
     function saveNewHabitCard (event) {
 
-        const config = {headers: {"Authorization": `Bearer ${user.user.token}`}};
+        const config = {headers: {"Authorization": `Bearer ${user.token}`}};
 
         event.preventDefault();
 
         const saveNewHabitCard = axios.post(NEW_HABIT_CARD_API, {name: habitName, days: selectedWeekDays}, config);
 
         saveNewHabitCard.then(APIResponse => {
+            console.log(APIResponse)
             reloadData();
-            // cancelNewHabitCard();
+            canceledNewHabitCard();
         });
         saveNewHabitCard.catch(error => {
             alert("Não foi possível salvar novo hábito.")
