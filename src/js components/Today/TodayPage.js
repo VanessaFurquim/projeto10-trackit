@@ -41,8 +41,6 @@ export default function TodayPage () {
 
     function changeColor (habit) {
 
-        console.log(habit)
-
         let checkmarkAPI = "";
 
         {

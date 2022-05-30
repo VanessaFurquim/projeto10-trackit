@@ -16,18 +16,20 @@ export default function Footer () {
             <Link to = "/habitos">
                 <HabitsButton>Hábitos</HabitsButton>
             </Link>
-            <CircularProgressbar 
-                background
-                backgroundPadding = {6}
-                value = {Math.ceil(completedHabitsPercentage)}
-                text = "Hoje"
-                styles = {buildStyles({
-                    backgroundColor: "#52B6FF",
-                    textColor: "#FFFFFF",
-                    pathColor: "#FFFFFF",
-                    trailColor: "transparent"
-                })}
-            />
+            <BarContainer>
+                <CircularProgressbar 
+                    background
+                    backgroundPadding = {6}
+                    value = {Math.ceil(completedHabitsPercentage)}
+                    text = "Hoje"
+                    styles = {buildStyles({
+                        backgroundColor: "#52B6FF",
+                        textColor: "black",
+                        pathColor: "#FFFFFF",
+                        trailColor: "transparent"
+                    })}
+                />
+            </BarContainer>
             <Link to = "/historico">
             <HistoryButton>Histórico</HistoryButton>
             </Link>
@@ -55,6 +57,12 @@ const HabitsButton = styledComponent.button`
     line-height: 22px;
     text-align: center;
     background: none;
+`;
+
+const BarContainer = styledComponent.div`
+    width: 100px;
+    height: 100px;
+    margin-bottom: 200px;
 `;
 
 const HistoryButton = styledComponent.button`
